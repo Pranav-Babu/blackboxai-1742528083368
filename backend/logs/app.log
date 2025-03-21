@@ -1,0 +1,140 @@
+2025-03-21 03:57:33 [DEBUG]: Cache flushed
+2025-03-21 03:57:33 [DEBUG]: Cache flushed
+2025-03-21 03:57:33 [DEBUG]: Cache set {"key":"test-key","size":21}
+2025-03-21 03:57:33 [DEBUG]: Cache set {"key":"test-key","ttl":3600,"success":true}
+2025-03-21 03:57:33 [DEBUG]: Cache get {"key":"test-key","hit":true}
+2025-03-21 03:57:33 [DEBUG]: Cache flushed
+2025-03-21 03:57:33 [DEBUG]: Cache flushed
+2025-03-21 03:57:33 [DEBUG]: Cache set {"key":"ttl-test","size":12}
+2025-03-21 03:57:33 [DEBUG]: Cache set {"key":"ttl-test","ttl":1,"success":true}
+2025-03-21 03:57:33 [DEBUG]: Cache get {"key":"ttl-test","hit":true}
+2025-03-21 03:57:34 [DEBUG]: Cache delete {"key":"ttl-test"}
+2025-03-21 03:57:34 [DEBUG]: Cache expired {"key":"ttl-test"}
+2025-03-21 03:57:34 [DEBUG]: Cache get {"key":"ttl-test","hit":false}
+2025-03-21 03:57:34 [DEBUG]: Cache flushed
+2025-03-21 03:57:34 [DEBUG]: Cache flushed
+2025-03-21 03:57:34 [DEBUG]: Cache set {"key":"delete-test","size":7}
+2025-03-21 03:57:34 [DEBUG]: Cache set {"key":"delete-test","ttl":3600,"success":true}
+2025-03-21 03:57:34 [DEBUG]: Cache delete {"key":"delete-test"}
+2025-03-21 03:57:34 [DEBUG]: Cache delete {"key":"delete-test","deleted":1}
+2025-03-21 03:57:34 [DEBUG]: Cache get {"key":"delete-test","hit":false}
+2025-03-21 03:57:34 [DEBUG]: Cache flushed
+2025-03-21 03:57:34 [DEBUG]: Cache flushed
+2025-03-21 03:57:34 [DEBUG]: Cache get {"key":"test:{\"url\":\"/test\"}","hit":false}
+2025-03-21 03:57:34 [INFO]: Info message
+2025-03-21 03:57:34 [ERROR]: Error message
+2025-03-21 03:57:34 [WARN]: Warning message
+2025-03-21 03:57:34 [DEBUG]: Debug message
+2025-03-21 03:57:34 [INFO]: Processing refund {"orderId":"67dce3aec099b6253d4ecc60","refundDetails":{"amount":500}}
+2025-03-21 03:57:34 [DEBUG]: Cache get {"key":"search:medicines:{\"filters\":{\"search\":\"test\",\"category\":\"non-prescription\",\"minPrice\":100,\"maxPrice\":500},\"options\":{}}","hit":false}
+2025-03-21 03:57:44 [ERROR]: Medicine search failed {"filters":{"search":"test","category":"non-prescription","minPrice":100,"maxPrice":500},"error":"Operation `medicines.find()` buffering timed out after 10000ms"}
+2025-03-21 03:57:44 [DEBUG]: Cache set {"key":"notification-test","size":37}
+2025-03-21 03:57:44 [DEBUG]: Cache set {"key":"notification-test","ttl":3600,"success":true}
+2025-03-21 03:57:44 [DEBUG]: Cache get {"key":"notification-test","hit":true}
+2025-03-21 03:57:44 [DEBUG]: Cache get {"key":"search:pharmacies:{\"filters\":{\"latitude\":19.076,\"longitude\":72.8777,\"radius\":5000,\"services\":[\"Home Delivery\"]},\"options\":{}}","hit":false}
+2025-03-21 03:57:54 [ERROR]: Pharmacy search failed {"filters":{"latitude":19.076,"longitude":72.8777,"radius":5000,"services":["Home Delivery"]},"error":"Operation `pharmacies.find()` buffering timed out after 10000ms"}
+2025-03-21 08:05:48 [DEBUG]: Cache flushed
+2025-03-21 08:05:48 [DEBUG]: Cache flushed
+2025-03-21 08:05:48 [DEBUG]: Cache set {"key":"test-key","size":21}
+2025-03-21 08:05:48 [DEBUG]: Cache set {"key":"test-key","ttl":3600,"success":true}
+2025-03-21 08:05:48 [DEBUG]: Cache get {"key":"test-key","hit":true}
+2025-03-21 08:05:48 [DEBUG]: Cache flushed
+2025-03-21 08:05:48 [DEBUG]: Cache flushed
+2025-03-21 08:05:48 [DEBUG]: Cache set {"key":"ttl-test","size":12}
+2025-03-21 08:05:48 [DEBUG]: Cache set {"key":"ttl-test","ttl":1,"success":true}
+2025-03-21 08:05:48 [DEBUG]: Cache get {"key":"ttl-test","hit":true}
+2025-03-21 08:05:49 [DEBUG]: Cache delete {"key":"ttl-test"}
+2025-03-21 08:05:49 [DEBUG]: Cache expired {"key":"ttl-test"}
+2025-03-21 08:05:49 [DEBUG]: Cache get {"key":"ttl-test","hit":false}
+2025-03-21 08:05:49 [DEBUG]: Cache flushed
+2025-03-21 08:05:49 [DEBUG]: Cache flushed
+2025-03-21 08:05:49 [DEBUG]: Cache set {"key":"delete-test","size":7}
+2025-03-21 08:05:49 [DEBUG]: Cache set {"key":"delete-test","ttl":3600,"success":true}
+2025-03-21 08:05:49 [DEBUG]: Cache delete {"key":"delete-test"}
+2025-03-21 08:05:49 [DEBUG]: Cache delete {"key":"delete-test","deleted":1}
+2025-03-21 08:05:49 [DEBUG]: Cache get {"key":"delete-test","hit":false}
+2025-03-21 08:05:49 [DEBUG]: Cache flushed
+2025-03-21 08:05:49 [DEBUG]: Cache flushed
+2025-03-21 08:05:49 [DEBUG]: Cache get {"key":"test:{\"url\":\"/test\"}","hit":false}
+2025-03-21 08:05:49 [INFO]: Info message
+2025-03-21 08:05:49 [ERROR]: Error message
+2025-03-21 08:05:49 [WARN]: Warning message
+2025-03-21 08:05:49 [DEBUG]: Debug message
+2025-03-21 08:05:49 [INFO]: Processing refund {"orderId":"67dd1ddda6874e7d639149c1","refundDetails":{"amount":500}}
+2025-03-21 08:05:49 [DEBUG]: Cache get {"key":"search:medicines:{\"filters\":{\"search\":\"test\",\"category\":\"non-prescription\",\"minPrice\":100,\"maxPrice\":500},\"options\":{}}","hit":false}
+2025-03-21 08:05:59 [ERROR]: Medicine search failed {"filters":{"search":"test","category":"non-prescription","minPrice":100,"maxPrice":500},"error":"Operation `medicines.find()` buffering timed out after 10000ms"}
+2025-03-21 08:05:59 [DEBUG]: Cache set {"key":"notification-test","size":37}
+2025-03-21 08:05:59 [DEBUG]: Cache set {"key":"notification-test","ttl":3600,"success":true}
+2025-03-21 08:05:59 [DEBUG]: Cache get {"key":"notification-test","hit":true}
+2025-03-21 08:05:59 [DEBUG]: Cache get {"key":"search:pharmacies:{\"filters\":{\"latitude\":19.076,\"longitude\":72.8777,\"radius\":5000,\"services\":[\"Home Delivery\"]},\"options\":{}}","hit":false}
+2025-03-21 08:06:09 [ERROR]: Pharmacy search failed {"filters":{"latitude":19.076,"longitude":72.8777,"radius":5000,"services":["Home Delivery"]},"error":"Operation `pharmacies.find()` buffering timed out after 10000ms"}
+2025-03-21 08:18:37 [DEBUG]: Cache flushed
+2025-03-21 08:18:37 [DEBUG]: Cache flushed
+2025-03-21 08:18:37 [DEBUG]: Cache set {"key":"test-key","size":21}
+2025-03-21 08:18:37 [DEBUG]: Cache set {"key":"test-key","ttl":3600,"success":true}
+2025-03-21 08:18:37 [DEBUG]: Cache get {"key":"test-key","hit":true}
+2025-03-21 08:18:37 [DEBUG]: Cache flushed
+2025-03-21 08:18:37 [DEBUG]: Cache flushed
+2025-03-21 08:18:37 [DEBUG]: Cache set {"key":"ttl-test","size":12}
+2025-03-21 08:18:37 [DEBUG]: Cache set {"key":"ttl-test","ttl":1,"success":true}
+2025-03-21 08:18:37 [DEBUG]: Cache get {"key":"ttl-test","hit":true}
+2025-03-21 08:18:38 [DEBUG]: Cache delete {"key":"ttl-test"}
+2025-03-21 08:18:38 [DEBUG]: Cache expired {"key":"ttl-test"}
+2025-03-21 08:18:38 [DEBUG]: Cache get {"key":"ttl-test","hit":false}
+2025-03-21 08:18:38 [DEBUG]: Cache flushed
+2025-03-21 08:18:38 [DEBUG]: Cache flushed
+2025-03-21 08:18:38 [DEBUG]: Cache set {"key":"delete-test","size":7}
+2025-03-21 08:18:38 [DEBUG]: Cache set {"key":"delete-test","ttl":3600,"success":true}
+2025-03-21 08:18:38 [DEBUG]: Cache delete {"key":"delete-test"}
+2025-03-21 08:18:38 [DEBUG]: Cache delete {"key":"delete-test","deleted":1}
+2025-03-21 08:18:38 [DEBUG]: Cache get {"key":"delete-test","hit":false}
+2025-03-21 08:18:38 [DEBUG]: Cache flushed
+2025-03-21 08:18:38 [DEBUG]: Cache flushed
+2025-03-21 08:18:38 [DEBUG]: Cache get {"key":"test:{\"url\":\"/test\"}","hit":false}
+2025-03-21 08:18:38 [INFO]: Info message
+2025-03-21 08:18:38 [ERROR]: Error message
+2025-03-21 08:18:38 [WARN]: Warning message
+2025-03-21 08:18:38 [DEBUG]: Debug message
+2025-03-21 08:18:38 [INFO]: Processing refund {"orderId":"67dd20de1fb6663dbeaa05ee","refundDetails":{"amount":500}}
+2025-03-21 08:18:38 [DEBUG]: Cache get {"key":"search:medicines:{\"filters\":{\"search\":\"test\",\"category\":\"non-prescription\",\"minPrice\":100,\"maxPrice\":500},\"options\":{}}","hit":false}
+2025-03-21 08:18:48 [ERROR]: Medicine search failed {"filters":{"search":"test","category":"non-prescription","minPrice":100,"maxPrice":500},"error":"Operation `medicines.find()` buffering timed out after 10000ms"}
+2025-03-21 08:18:48 [DEBUG]: Cache set {"key":"notification-test","size":37}
+2025-03-21 08:18:48 [DEBUG]: Cache set {"key":"notification-test","ttl":3600,"success":true}
+2025-03-21 08:18:48 [DEBUG]: Cache get {"key":"notification-test","hit":true}
+2025-03-21 08:18:48 [DEBUG]: Cache get {"key":"search:pharmacies:{\"filters\":{\"latitude\":19.076,\"longitude\":72.8777,\"radius\":5000,\"services\":[\"Home Delivery\"]},\"options\":{}}","hit":false}
+2025-03-21 08:18:58 [ERROR]: Pharmacy search failed {"filters":{"latitude":19.076,"longitude":72.8777,"radius":5000,"services":["Home Delivery"]},"error":"Operation `pharmacies.find()` buffering timed out after 10000ms"}
+2025-03-21 08:49:21 [DEBUG]: Cache flushed
+2025-03-21 08:49:21 [DEBUG]: Cache flushed
+2025-03-21 08:49:21 [DEBUG]: Cache set {"key":"test-key","size":21}
+2025-03-21 08:49:21 [DEBUG]: Cache set {"key":"test-key","ttl":3600,"success":true}
+2025-03-21 08:49:21 [DEBUG]: Cache get {"key":"test-key","hit":true}
+2025-03-21 08:49:21 [DEBUG]: Cache flushed
+2025-03-21 08:49:21 [DEBUG]: Cache flushed
+2025-03-21 08:49:21 [DEBUG]: Cache set {"key":"ttl-test","size":12}
+2025-03-21 08:49:21 [DEBUG]: Cache set {"key":"ttl-test","ttl":1,"success":true}
+2025-03-21 08:49:21 [DEBUG]: Cache get {"key":"ttl-test","hit":true}
+2025-03-21 08:49:22 [DEBUG]: Cache delete {"key":"ttl-test"}
+2025-03-21 08:49:22 [DEBUG]: Cache expired {"key":"ttl-test"}
+2025-03-21 08:49:22 [DEBUG]: Cache get {"key":"ttl-test","hit":false}
+2025-03-21 08:49:22 [DEBUG]: Cache flushed
+2025-03-21 08:49:22 [DEBUG]: Cache flushed
+2025-03-21 08:49:22 [DEBUG]: Cache set {"key":"delete-test","size":7}
+2025-03-21 08:49:22 [DEBUG]: Cache set {"key":"delete-test","ttl":3600,"success":true}
+2025-03-21 08:49:22 [DEBUG]: Cache delete {"key":"delete-test"}
+2025-03-21 08:49:22 [DEBUG]: Cache delete {"key":"delete-test","deleted":1}
+2025-03-21 08:49:22 [DEBUG]: Cache get {"key":"delete-test","hit":false}
+2025-03-21 08:49:22 [DEBUG]: Cache flushed
+2025-03-21 08:49:22 [DEBUG]: Cache flushed
+2025-03-21 08:49:22 [DEBUG]: Cache get {"key":"test:{\"url\":\"/test\"}","hit":false}
+2025-03-21 08:49:22 [INFO]: Info message
+2025-03-21 08:49:22 [ERROR]: Error message
+2025-03-21 08:49:22 [WARN]: Warning message
+2025-03-21 08:49:22 [DEBUG]: Debug message
+2025-03-21 08:49:22 [INFO]: Processing refund {"orderId":"67dd28125f06e2128f9d800d","refundDetails":{"amount":500}}
+2025-03-21 08:49:22 [DEBUG]: Cache get {"key":"search:medicines:{\"filters\":{\"search\":\"test\",\"category\":\"non-prescription\",\"minPrice\":100,\"maxPrice\":500},\"options\":{}}","hit":false}
+2025-03-21 08:49:32 [ERROR]: Medicine search failed {"filters":{"search":"test","category":"non-prescription","minPrice":100,"maxPrice":500},"error":"Operation `medicines.find()` buffering timed out after 10000ms"}
+2025-03-21 08:49:32 [DEBUG]: Cache set {"key":"notification-test","size":37}
+2025-03-21 08:49:32 [DEBUG]: Cache set {"key":"notification-test","ttl":3600,"success":true}
+2025-03-21 08:49:32 [DEBUG]: Cache get {"key":"notification-test","hit":true}
+2025-03-21 08:49:32 [DEBUG]: Cache get {"key":"search:pharmacies:{\"filters\":{\"latitude\":19.076,\"longitude\":72.8777,\"radius\":5000,\"services\":[\"Home Delivery\"]},\"options\":{}}","hit":false}
+2025-03-21 08:49:42 [ERROR]: Pharmacy search failed {"filters":{"latitude":19.076,"longitude":72.8777,"radius":5000,"services":["Home Delivery"]},"error":"Operation `pharmacies.find()` buffering timed out after 10000ms"}
