@@ -4,6 +4,95 @@ const Pharmacy = require('../models/Pharmacy');
 const ErrorResponse = require('../utils/errorResponse');
 
 /**
+ * @desc    Add to cart
+ * @route   POST /api/orders/cart
+ * @access  Private (Customer)
+ */
+exports.addToCart = async (req, res, next) => {
+  try {
+    const { medicineId, quantity } = req.body;
+
+    // Check if medicine exists and is available
+    const medicine = await Medicine.findOne({
+      _id: medicineId,
+      status: 'active',
+      stock: { $gte: quantity }
+    });
+
+    if (!medicine) {
+      return next(ErrorResponse.notFound('Medicine not found or insufficient stock'));
+    }
+
+    // Find or create cart order
+    let cart = await Order.findOne({
+      customer: req.user.id,
+      status: 'cart'
+    });
+
+    if (!cart) {
+      cart = await Order.create({
+        customer: req.user.id,
+        pharmacy: medicine.pharmacy,
+        status: 'cart',
+        items: []
+      });
+    }
+
+    // Check if medicine is from same pharmacy
+    if (cart.pharmacy.toString() !== medicine.pharmacy.toString()) {
+      return next(ErrorResponse.badRequest('Cannot add items from different pharmacies'));
+    }
+
+    // Add or update item in cart
+    const existingItem = cart.items.find(
+      item => item.medicine.toString() === medicineId
+    );
+
+    if (existingItem) {
+      existingItem.quantity += quantity;
+    } else {
+      cart.items.push({
+        medicine: medicineId,
+        quantity,
+        price: medicine.price,
+        discountedPrice: medicine.discountedPrice
+      });
+    }
+
+    // Recalculate amounts
+    await cart.calculateAmounts();
+
+    res.status(200).json({
+      success: true,
+      data: cart
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Get cart
+ * @route   GET /api/orders/cart
+ * @access  Private (Customer)
+ */
+exports.getCart = async (req, res, next) => {
+  try {
+    const cart = await Order.findOne({
+      customer: req.user.id,
+      status: 'cart'
+    }).populate('items.medicine', 'name manufacturer price images');
+
+    res.status(200).json({
+      success: true,
+      data: cart || { items: [] }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * @desc    Create new order
  * @route   POST /api/orders
  * @access  Private (Customer)
@@ -67,7 +156,7 @@ exports.createOrder = async (req, res, next) => {
       };
     }));
 
-    // Calculate delivery charge (can be based on distance or order value)
+    // Calculate delivery charge
     const deliveryCharge = calculateDeliveryCharge(totalAmount, deliveryAddress);
 
     // Create order
@@ -168,7 +257,7 @@ exports.getOrder = async (req, res, next) => {
     // Check authorization
     if (
       order.customer.toString() !== req.user.id &&
-      order.pharmacy.user.toString() !== req.user.id
+      order.pharmacy.toString() !== req.user.id
     ) {
       return next(ErrorResponse.authorization('Not authorized to access this order'));
     }
@@ -206,6 +295,9 @@ exports.updateCart = async (req, res, next) => {
       const item = order.items.id(updateItem.id);
       if (item) {
         item.selected = updateItem.selected;
+        if (updateItem.quantity) {
+          item.quantity = updateItem.quantity;
+        }
       }
     });
 
@@ -352,3 +444,5 @@ const restoreMedicineStock = async (items) => {
     }
   }
 };
+
+module.exports = exports;
