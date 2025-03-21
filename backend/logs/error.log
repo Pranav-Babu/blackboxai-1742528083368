@@ -1,0 +1,12 @@
+2025-03-21 03:57:34 [ERROR]: Error message
+2025-03-21 03:57:44 [ERROR]: Medicine search failed {"filters":{"search":"test","category":"non-prescription","minPrice":100,"maxPrice":500},"error":"Operation `medicines.find()` buffering timed out after 10000ms"}
+2025-03-21 03:57:54 [ERROR]: Pharmacy search failed {"filters":{"latitude":19.076,"longitude":72.8777,"radius":5000,"services":["Home Delivery"]},"error":"Operation `pharmacies.find()` buffering timed out after 10000ms"}
+2025-03-21 08:05:49 [ERROR]: Error message
+2025-03-21 08:05:59 [ERROR]: Medicine search failed {"filters":{"search":"test","category":"non-prescription","minPrice":100,"maxPrice":500},"error":"Operation `medicines.find()` buffering timed out after 10000ms"}
+2025-03-21 08:06:09 [ERROR]: Pharmacy search failed {"filters":{"latitude":19.076,"longitude":72.8777,"radius":5000,"services":["Home Delivery"]},"error":"Operation `pharmacies.find()` buffering timed out after 10000ms"}
+2025-03-21 08:18:38 [ERROR]: Error message
+2025-03-21 08:18:48 [ERROR]: Medicine search failed {"filters":{"search":"test","category":"non-prescription","minPrice":100,"maxPrice":500},"error":"Operation `medicines.find()` buffering timed out after 10000ms"}
+2025-03-21 08:18:58 [ERROR]: Pharmacy search failed {"filters":{"latitude":19.076,"longitude":72.8777,"radius":5000,"services":["Home Delivery"]},"error":"Operation `pharmacies.find()` buffering timed out after 10000ms"}
+2025-03-21 08:49:22 [ERROR]: Error message
+2025-03-21 08:49:32 [ERROR]: Medicine search failed {"filters":{"search":"test","category":"non-prescription","minPrice":100,"maxPrice":500},"error":"Operation `medicines.find()` buffering timed out after 10000ms"}
+2025-03-21 08:49:42 [ERROR]: Pharmacy search failed {"filters":{"latitude":19.076,"longitude":72.8777,"radius":5000,"services":["Home Delivery"]},"error":"Operation `pharmacies.find()` buffering timed out after 10000ms"}
