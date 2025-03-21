@@ -7,9 +7,9 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "seed": "node utils/seeder.js",
-    "test": "jest --detectOpenHandles",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test": "jest --config jest.config.js --detectOpenHandles",
+    "test:watch": "jest --config jest.config.js --watch",
+    "test:coverage": "jest --config jest.config.js --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write '**/*.{js,json,md}'",
@@ -44,12 +44,13 @@
     "eslint-plugin-jest": "^27.2.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.3",
-    "jest": "^29.5.0",
+    "jest": "^29.7.0",
     "lint-staged": "^13.2.2",
+    "mongodb-memory-server": "^10.1.4",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
-    "supertest": "^6.3.3"
+    "puppeteer": "^24.4.0",
+    "supertest": "^6.3.4"
   },
   "engines": {
     "node": ">=14.0.0"
@@ -61,16 +62,6 @@
     ],
     "*.{json,md}": [
       "prettier --write"
-    ]
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "coverageDirectory": "./coverage",
-    "collectCoverageFrom": [
-      "**/*.js",
-      "!**/node_modules/**",
-      "!**/coverage/**",
-      "!**/tests/**"
     ]
   },
   "keywords": [
