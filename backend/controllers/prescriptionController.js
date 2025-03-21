@@ -2,40 +2,11 @@ const Prescription = require('../models/Prescription');
 const Order = require('../models/Order');
 const Medicine = require('../models/Medicine');
 const ErrorResponse = require('../utils/errorResponse');
-const multer = require('multer');
-const path = require('path');
-
-// Configure multer for file upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/prescriptions');
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
-    cb(null, `prescription-${uniqueSuffix}${path.extname(file.originalname)}`);
-  }
-});
-
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error('Invalid file type. Only JPEG, PNG, and PDF files are allowed.'), false);
-  }
-};
-
-exports.upload = multer({
-  storage,
-  fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB
-  }
-});
+const fileHandler = require('../utils/fileHandler');
 
 /**
  * @desc    Upload prescription
- * @route   POST /api/prescriptions
+ * @route   POST /api/prescriptions/upload
  * @access  Private (Customer)
  */
 exports.uploadPrescription = async (req, res, next) => {
@@ -49,17 +20,27 @@ exports.uploadPrescription = async (req, res, next) => {
       recurringDetails
     } = req.body;
 
-    if (!req.files || req.files.length === 0) {
+    // Handle file upload
+    if (!req.files || !req.files.images) {
       return next(ErrorResponse.badRequest('Please upload prescription images'));
     }
+
+    // Upload images
+    const uploadedImages = await Promise.all(
+      req.files.images.map(async (file) => {
+        const uploadedFile = await fileHandler.uploadFile(file, 'prescriptions');
+        return {
+          url: uploadedFile.url,
+          uploadedAt: new Date()
+        };
+      })
+    );
 
     // Create prescription record
     const prescription = await Prescription.create({
       customer: req.user.id,
       pharmacy,
-      images: req.files.map(file => ({
-        url: file.path
-      })),
+      images: uploadedImages,
       doctorDetails,
       patientDetails,
       validity: new Date(validity),
@@ -158,39 +139,6 @@ exports.getPharmacyPrescriptions = async (req, res, next) => {
 };
 
 /**
- * @desc    Get single prescription
- * @route   GET /api/prescriptions/:id
- * @access  Private
- */
-exports.getPrescription = async (req, res, next) => {
-  try {
-    const prescription = await Prescription.findById(req.params.id)
-      .populate('customer', 'name email phone')
-      .populate('pharmacy', 'storeName contactInfo')
-      .populate('history.performedBy', 'name role');
-
-    if (!prescription) {
-      return next(ErrorResponse.notFound('Prescription not found'));
-    }
-
-    // Check authorization
-    if (
-      prescription.customer.toString() !== req.user.id &&
-      prescription.pharmacy.toString() !== req.pharmacy?._id
-    ) {
-      return next(ErrorResponse.authorization('Not authorized to view this prescription'));
-    }
-
-    res.status(200).json({
-      success: true,
-      data: prescription
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-/**
  * @desc    Verify prescription
  * @route   PUT /api/prescriptions/:id/verify
  * @access  Private (Pharmacy)
@@ -224,7 +172,39 @@ exports.verifyPrescription = async (req, res, next) => {
 
     // Update medicines information
     if (medicines && medicines.length > 0) {
-      prescription.medicines = medicines;
+      // Check medicine availability and suggest alternatives if needed
+      const processedMedicines = await Promise.all(medicines.map(async (med) => {
+        const medicine = await Medicine.findOne({
+          name: { $regex: new RegExp(`^${med.name}$`, 'i') },
+          pharmacy: req.pharmacy._id
+        });
+
+        if (medicine && medicine.stock >= (med.quantity || 1)) {
+          return {
+            ...med,
+            status: 'approved',
+            medicine: medicine._id
+          };
+        } else {
+          // Find alternative medicine
+          const alternative = await Medicine.findOne({
+            genericName: medicine?.genericName,
+            pharmacy: req.pharmacy._id,
+            stock: { $gte: med.quantity || 1 }
+          });
+
+          return {
+            ...med,
+            status: alternative ? 'alternative_suggested' : 'unavailable',
+            alternative: alternative ? {
+              medicine: alternative._id,
+              reason: 'Original medicine out of stock, suggesting alternative with same composition'
+            } : undefined
+          };
+        }
+      }));
+
+      prescription.medicines = processedMedicines;
     }
 
     // Add to history
@@ -255,47 +235,31 @@ exports.verifyPrescription = async (req, res, next) => {
 };
 
 /**
- * @desc    Forward prescription to another pharmacy
- * @route   POST /api/prescriptions/:id/forward
- * @access  Private (Customer)
+ * @desc    Get prescription medicines
+ * @route   GET /api/prescriptions/:id/medicines
+ * @access  Private
  */
-exports.forwardPrescription = async (req, res, next) => {
+exports.getPrescriptionMedicines = async (req, res, next) => {
   try {
-    const { newPharmacy } = req.body;
-
-    const prescription = await Prescription.findOne({
-      _id: req.params.id,
-      customer: req.user.id
-    });
+    const prescription = await Prescription.findById(req.params.id)
+      .populate('medicines.medicine', 'name manufacturer price stock')
+      .populate('medicines.alternative.medicine', 'name manufacturer price stock');
 
     if (!prescription) {
       return next(ErrorResponse.notFound('Prescription not found'));
     }
 
-    // Check if prescription can be forwarded
-    if (!['rejected', 'pending'].includes(prescription.status)) {
-      return next(ErrorResponse.badRequest('Prescription cannot be forwarded at this stage'));
+    // Check authorization
+    if (
+      prescription.customer.toString() !== req.user.id &&
+      prescription.pharmacy.toString() !== req.pharmacy?._id
+    ) {
+      return next(ErrorResponse.authorization('Not authorized to view this prescription'));
     }
-
-    // Forward to new pharmacy
-    await prescription.forwardToPharmacy(newPharmacy);
-
-    // Update prescription details
-    prescription.pharmacy = newPharmacy;
-    prescription.status = 'pending';
-
-    // Add to history
-    prescription.history.push({
-      action: 'forwarded',
-      performedBy: req.user.id,
-      notes: `Forwarded to new pharmacy`
-    });
-
-    await prescription.save();
 
     res.status(200).json({
       success: true,
-      data: prescription
+      data: prescription.medicines
     });
   } catch (error) {
     next(error);
@@ -303,7 +267,7 @@ exports.forwardPrescription = async (req, res, next) => {
 };
 
 /**
- * @desc    Process prescription refill
+ * @desc    Request prescription refill
  * @route   POST /api/prescriptions/:id/refill
  * @access  Private (Customer)
  */
@@ -338,7 +302,7 @@ exports.requestRefill = async (req, res, next) => {
     prescription.history.push({
       action: 'refill_requested',
       performedBy: req.user.id,
-      notes: `Refill requested`
+      notes: 'Refill requested'
     });
 
     await prescription.save();
@@ -354,3 +318,5 @@ exports.requestRefill = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports = exports;
